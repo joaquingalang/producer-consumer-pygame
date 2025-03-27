@@ -10,7 +10,7 @@ class Producer:
 
     def spawn(self):
         if (self.isEmpty):
-            self.value = randint(100)
+            self.value = randint(1, 100)
             self.timestamp = datetime.now()
             self.isEmpty = False
 
@@ -19,6 +19,6 @@ class Producer:
             value = self.value
             self.value = None
             self.timestamp = None
-            self.isEmpty = False
+            self.isEmpty = True
             return value
     

@@ -1,9 +1,10 @@
+from random import randint, shuffle
 from models.producer import Producer
 from models.consumer import Consumer
 
 class ProdConEnvironment:
 
-    def __init__(self, size=7):
+    def __init__(self, size=8):
         
         # Semaphores
         self.mutex = False
@@ -13,21 +14,12 @@ class ProdConEnvironment:
         # Stores Values in Buffer
         self.buffer = []
         self.max_buffer_size = size
-        self.current_buffer_size = size
 
         # List of Producers
         self.producers = []
 
         # List of Consumers
         self.consumers = []
-
-    def increase_buffer_size(self):
-        if (self.current_buffer_size < self.max_buffer_size):
-            self.current_buffer_size += 1
-
-    def decrease_buffer_size(self):
-        if (self.current_buffer_size > 1):
-            self.current_buffer_size -= 1
 
     def add_prod(self):
         if (len(self.producers) < 5):
@@ -53,7 +45,33 @@ class ProdConEnvironment:
 
     def consume(self):
         for con in self.consumers:
-            con.feed()
+            con.digest()
+
+    def insert_data(self):
+        if (self.mutex == False and len(self.buffer) < self.max_buffer_size):
+            self.mutex = True
+
+            # Grab a value from a producer with a value
+            for prod in self.producers[::-1]:
+                if (not prod.isEmpty):
+                    value = prod.supply()
+                    self.buffer.append(value)
+                    break
+
+            self.mutex = False
+
+    def remove_data(self):
+        if (self.mutex == False and len(self.buffer) > 0):
+            self.mutex = True
+            random_index = randint(0, len(self.buffer)-1)
+            value = self.buffer.pop(random_index)
+            
+            random_index = randint(0, len(self.consumers)-1)
+            con = self.consumers[random_index]
+            con.feed(value)
+
+            self.mutex = False
+
 
     
 

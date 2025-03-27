@@ -1,5 +1,6 @@
 import pygame
 import sys
+from random import randint
 from utils.settings import *
 from utils.surfaces import *
 from models.prod_con_environment import ProdConEnvironment
@@ -25,8 +26,11 @@ buttons = {
 }
 
 # Cooldown settings
-COOLDOWN = 200  # Cooldown duration in milliseconds
+CLICK_COOLDOWN = 200  # Cooldown duration in milliseconds
 last_click_time = 0  # Tracks the last time a click was processed
+
+UPDATE_COOLDOWN = 1500  # Cooldown duration in milliseconds
+last_update_time = 0  # Tracks the last time the simulation was updated
 
 simulation.buffer = [24, 3, 11]
 
@@ -48,7 +52,7 @@ while running:
     # Input Checks
     mouse_pos = pygame.mouse.get_pos()
     current_time = pygame.time.get_ticks()  # Get the current time in milliseconds
-    if pygame.mouse.get_pressed()[0] and current_time - last_click_time > COOLDOWN:
+    if pygame.mouse.get_pressed()[0] and current_time - last_click_time > CLICK_COOLDOWN:
         last_click_time = current_time  # Update the last click time
         for key, button in buttons.items():
             if button.rect.collidepoint(mouse_pos):
@@ -64,6 +68,34 @@ while running:
         print(f"Buffer Size: {len(simulation.buffer)}")
         print(f"Producers: {len(simulation.producers)}")
         print(f"Consumers: {len(simulation.consumers)}")
+
+    # Update Simulation Every 1.5 Seconds
+    if (current_time - last_update_time) > UPDATE_COOLDOWN:
+        last_update_time = current_time
+        total_prod_and_con = len(simulation.producers) + len(simulation.consumers)
+
+        if (total_prod_and_con > 0):
+
+            # Consume
+            simulation.consume()
+
+            # Determine Turn Taker
+            if (len(simulation.buffer) == 0 and len(simulation.producers) != 0):
+                simulation.insert_data()
+            elif (len(simulation.buffer) == 8 and len(simulation.consumers) != 0):
+                simulation.remove_data()
+            else:
+                prod_chance = len(simulation.producers) / total_prod_and_con
+                turn_taker = randint(1, 100 + 1)
+                print(turn_taker, prod_chance * 100)
+                if (turn_taker <= int(prod_chance * 100)):
+                    simulation.insert_data()
+                else:
+                    simulation.remove_data()
+
+            # Produce
+            simulation.produce()
+
 
     # Update the display
     pygame.display.update()
