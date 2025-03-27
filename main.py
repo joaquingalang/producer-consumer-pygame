@@ -48,6 +48,7 @@ while running:
 
     # Display Surfaces
     display_elements(screen, simulation.producers, simulation.consumers, simulation.buffer)
+    screen.blit(locked_surface.image, locked_surface.rect)
 
     # Input Checks
     mouse_pos = pygame.mouse.get_pos()
@@ -81,16 +82,20 @@ while running:
 
             # Determine Turn Taker
             if (len(simulation.buffer) == 0 and len(simulation.producers) != 0):
+                locked_surface.rect.topleft = (SCREEN_WIDTH // 2 - 350, 205)
                 simulation.insert_data()
             elif (len(simulation.buffer) == 8 and len(simulation.consumers) != 0):
+                locked_surface.rect.topleft = (SCREEN_WIDTH // 2 + 50, 205)
                 simulation.remove_data()
             else:
                 prod_chance = len(simulation.producers) / total_prod_and_con
                 turn_taker = randint(1, 100 + 1)
                 print(turn_taker, prod_chance * 100)
                 if (turn_taker <= int(prod_chance * 100)):
+                    locked_surface.rect.topleft = (SCREEN_WIDTH // 2 - 350, 205)
                     simulation.insert_data()
                 else:
+                    locked_surface.rect.topleft = (SCREEN_WIDTH // 2 + 50, 205)
                     simulation.remove_data()
 
             # Produce
