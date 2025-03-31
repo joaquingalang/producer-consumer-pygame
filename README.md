@@ -12,4 +12,4 @@ This project is a graphical simulation of the Producer-Consumer Problem using Py
 2. Install Pygame. Open your terminal or command prompt and run `pip install pygame`.
 3. Clone the repository
 4. Navigate to the repository
-5. Run the `snake.py` file.
+5. Open the `dist` folder and run the executable file.
