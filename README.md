@@ -7,12 +7,12 @@ This project is a graphical simulation of the Producer-Consumer Problem using Py
 - Use the add/subtract buttons to add producers and consumers
 - Observe the results
 
-## How to Run ⚙️
+### How to Run ⚙️
 1. Clone the repository
 2. Navigate to the repository
 5. Open the `dist` folder and run the executable file
 
-## Alternative Setup 🛠️
+### Alternative Setup 🛠️
 1. Install [Python](https://www.python.org/downloads/)
 2. Install Pygame. Open your terminal or command prompt and run `pip install pygame`
 3. Clone the repository
