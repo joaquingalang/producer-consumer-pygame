@@ -13,3 +13,4 @@ This project is a graphical simulation of the Producer-Consumer Problem using Py
 3. Clone the repository
 4. Navigate to the repository
 5. Open the `dist` folder and run the executable file.
+6. Alternatively, manually run the `main.py` file.
