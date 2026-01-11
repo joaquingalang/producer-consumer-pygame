@@ -1,1 +1,10 @@
-xref-main.html linguist-generated
+# Force Python to be recognized
+*.py linguist-language=Python
+
+# Ignore HTML from language stats
+*.html linguist-vendored
+
+# Ignore common generated folders
+docs/** linguist-vendored
+build/** linguist-vendored
+dist/** linguist-vendored
